@@ -29,7 +29,6 @@ description: > # this means to ignore newlines until "Language & timezone"
 ## => Language and Timezone
 ##############################
 lang: ko
-lang: ko-KR
 timezone: Asia/Seoul # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the available values
 
 
