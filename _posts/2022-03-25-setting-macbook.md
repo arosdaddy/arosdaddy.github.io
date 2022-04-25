@@ -4,6 +4,7 @@ tags:
 - iOS 개발 환경
 - MacBook Pro
 - Apple M1 Pro
+modify_date: 2022-04-25
 ---
 
 iOS 개발 환경과 맥북에 설정하면 편리한 기능을 정리해 봅니다.
@@ -198,6 +199,21 @@ $ exec zsh
 ```
 
 ### Git
+#### 명령어 별칭(alias) 설정
+```zsh
+# 현재 브랜치를 origin 에 push 하기
+$ git config --global alias.poh 'push origin HEAD'
+# 마지막 로그 diff 내용까지 보기
+$ git config --global alias.last 'log -1 -p'
+
+# zsh 재실행하기
+$ exec zsh
+
+# 사용 방법
+$ git poh
+$ git last
+```
+
 #### 텍스트 편집기 변경
 ```zsh
 # Visual Studio Code 사용
@@ -221,6 +237,56 @@ $ git config --add remote.origin.fetch '+refs/pull-requests/*/from:refs/remotes/
 - 키보드로 팝업 버튼 선택하기
     + 하단 **키보드 탐색을 사용하여 컨트롤 간에 초점 이동** 체크
     + OS 팝업에서 `Tap` 키로 버튼 이동 후 `Space` 로 선택 가능
+
+## SSH 키 설정
+- 기존 키 확인
+
+```zsh
+# ~/.ssh 폴더 내용 확인
+$ cd ~/.ssh
+$ ls
+
+## id_ed25519 와 id_ed25519.pub 혹은 id_rsa 와 id_rsa.pub 파일쌍이 있으면 기존 생성한 경우
+```
+
+- 신규 키 생성
+
+```zsh
+# ed25519 방식
+$ ssh-keygen -t ed25519 -C "your_email@example.com"
+
+# RSA 방식 (ed25519 방식을 지원하지 않는 경우)
+$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+- Public 키 복사하기
+
+```zsh
+# 클립보드에 복사하기
+$ pbcopy < ~/.ssh/id_ed25519.pub
+
+## 해당 복사 내용을 GitHub 등에 등록해서 사용
+```
+
+- 설정 파일 생성
+
+```zsh
+# SSH 설정 파일 생성
+$ touch ~/.ssh/config
+
+## 작성 예시
+Host github.com
+  IdentityFile ~/.ssh/id_ed25519
+  User git
+  AddKeysToAgent yes
+  UseKeychain yes
+```
+
+- 관련 링크
+    + [GitHub: Connect with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
+    + [GitHub 접속 용 SSH 키 만드는 방법](https://www.lainyzine.com/ko/article/creating-ssh-key-for-github/)
+    + [SSH 를 활용하여 여러 계정 관리 방법](https://medium.com/@sunnkis/github-ssh-를-활용하여-여러-계정-관리-방법-7ec29bd0186d)
+
 
 # 참고자료
 - M1 맥북 프로 설정 : [macOS/iOS 개발 환경 설정하기](https://medium.com/codesquad-kr/macos-ios-개발-환경-설정하기-180dab308d31)
